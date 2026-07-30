@@ -3,7 +3,7 @@ const http = require('http');
 
 const PORT = process.env.PORT || 3000;
 const TMDB_API_KEY = process.env.TMDB_API_KEY || '';
-const TMDB_BASE = 'api.themoviedb.org';
+const TMDB_API_BASE = 'api.themoviedb.org';
 const TMDB_IMAGE_BASE = 'image.tmdb.org';
 
 const server = http.createServer((req, res) => {
@@ -20,9 +20,9 @@ const server = http.createServer((req, res) => {
   const url = new URL(req.url, `http://localhost:${PORT}`);
   const path = url.pathname;
 
-  // پروکسی عکس‌ها
-  if (path.startsWith('/image/')) {
-    const imagePath = path.replace('/image', '');
+  // پروکسی عکس‌ها — مسیر: /img/w92/poster.jpg
+  if (path.startsWith('/img/')) {
+    const imagePath = path.replace('/img', '');
     const options = {
       hostname: TMDB_IMAGE_BASE,
       path: `/t/p${imagePath}`,
@@ -48,7 +48,7 @@ const server = http.createServer((req, res) => {
   params.set('api_key', TMDB_API_KEY);
 
   const options = {
-    hostname: TMDB_BASE,
+    hostname: TMDB_API_BASE,
     path: `/3${path}?${params.toString()}`,
     method: 'GET',
     headers: { 'Accept': 'application/json' }
